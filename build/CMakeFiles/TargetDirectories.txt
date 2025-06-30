@@ -1,0 +1,7 @@
+/home/rick/yolo_new/build/CMakeFiles/volleyball_detector.dir
+/home/rick/yolo_new/build/CMakeFiles/edit_cache.dir
+/home/rick/yolo_new/build/CMakeFiles/rebuild_cache.dir
+/home/rick/yolo_new/build/CMakeFiles/list_install_components.dir
+/home/rick/yolo_new/build/CMakeFiles/install.dir
+/home/rick/yolo_new/build/CMakeFiles/install/local.dir
+/home/rick/yolo_new/build/CMakeFiles/install/strip.dir
