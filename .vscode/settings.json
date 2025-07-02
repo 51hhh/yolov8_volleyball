@@ -68,6 +68,16 @@
         "codecvt": "cpp",
         "forward_list": "cpp",
         "ranges": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "*.back": "cpp",
+        "bitset": "cpp",
+        "coroutine": "cpp",
+        "csignal": "cpp",
+        "source_location": "cpp",
+        "future": "cpp",
+        "cinttypes": "cpp",
+        "typeindex": "cpp",
+        "strstream": "cpp",
+        "cfenv": "cpp"
     }
 }

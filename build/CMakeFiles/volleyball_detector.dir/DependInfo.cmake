@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/rick/yolo_new/camera/camera.cpp" "CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o" "gcc" "CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o.d"
+  "/home/rick/yolo_new/camera/hikvision_wrapper.cpp" "CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o" "gcc" "CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o.d"
   "/home/rick/yolo_new/detect/detect.cpp" "CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o" "gcc" "CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o.d"
   "/home/rick/yolo_new/main.cpp" "CMakeFiles/volleyball_detector.dir/main.cpp.o" "gcc" "CMakeFiles/volleyball_detector.dir/main.cpp.o.d"
   "/home/rick/yolo_new/serial/serial.cpp" "CMakeFiles/volleyball_detector.dir/serial/serial.cpp.o" "gcc" "CMakeFiles/volleyball_detector.dir/serial/serial.cpp.o.d"

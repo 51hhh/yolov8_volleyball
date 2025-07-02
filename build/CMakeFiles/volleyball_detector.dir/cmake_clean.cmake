@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o"
-  "CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o.d"
+  "CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o"
+  "CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o.d"
   "CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o"
   "CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o.d"
   "CMakeFiles/volleyball_detector.dir/main.cpp.o"

@@ -69,19 +69,19 @@ include CMakeFiles/volleyball_detector.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/volleyball_detector.dir/flags.make
 
-CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o: CMakeFiles/volleyball_detector.dir/flags.make
-CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o: /home/rick/yolo_new/camera/camera.cpp
-CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o: CMakeFiles/volleyball_detector.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/rick/yolo_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o -MF CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o.d -o CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o -c /home/rick/yolo_new/camera/camera.cpp
+CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o: CMakeFiles/volleyball_detector.dir/flags.make
+CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o: /home/rick/yolo_new/camera/hikvision_wrapper.cpp
+CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o: CMakeFiles/volleyball_detector.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/rick/yolo_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o -MF CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o.d -o CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o -c /home/rick/yolo_new/camera/hikvision_wrapper.cpp
 
-CMakeFiles/volleyball_detector.dir/camera/camera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/volleyball_detector.dir/camera/camera.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/rick/yolo_new/camera/camera.cpp > CMakeFiles/volleyball_detector.dir/camera/camera.cpp.i
+CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/rick/yolo_new/camera/hikvision_wrapper.cpp > CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.i
 
-CMakeFiles/volleyball_detector.dir/camera/camera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/volleyball_detector.dir/camera/camera.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/rick/yolo_new/camera/camera.cpp -o CMakeFiles/volleyball_detector.dir/camera/camera.cpp.s
+CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/rick/yolo_new/camera/hikvision_wrapper.cpp -o CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.s
 
 CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o: CMakeFiles/volleyball_detector.dir/flags.make
 CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o: /home/rick/yolo_new/detect/detect.cpp
@@ -127,7 +127,7 @@ CMakeFiles/volleyball_detector.dir/main.cpp.s: cmake_force
 
 # Object files for target volleyball_detector
 volleyball_detector_OBJECTS = \
-"CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o" \
+"CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o" \
 "CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o" \
 "CMakeFiles/volleyball_detector.dir/serial/serial.cpp.o" \
 "CMakeFiles/volleyball_detector.dir/main.cpp.o"
@@ -135,7 +135,7 @@ volleyball_detector_OBJECTS = \
 # External object files for target volleyball_detector
 volleyball_detector_EXTERNAL_OBJECTS =
 
-volleyball_detector: CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o
+volleyball_detector: CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o
 volleyball_detector: CMakeFiles/volleyball_detector.dir/detect/detect.cpp.o
 volleyball_detector: CMakeFiles/volleyball_detector.dir/serial/serial.cpp.o
 volleyball_detector: CMakeFiles/volleyball_detector.dir/main.cpp.o

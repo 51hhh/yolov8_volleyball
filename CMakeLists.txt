@@ -13,15 +13,15 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 # 添加源文件
 set(SOURCES
-    camera/camera.cpp
+    camera/hikvision_wrapper.cpp
     detect/detect.cpp
     serial/serial.cpp
+    main.cpp
 )
 
 # 添加可执行文件
 add_executable(volleyball_detector
     ${SOURCES}
-    main.cpp
 )
 
 # 包含目录
@@ -31,7 +31,15 @@ target_include_directories(volleyball_detector PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/detect
     ${CMAKE_CURRENT_SOURCE_DIR}/general
     ${CMAKE_CURRENT_SOURCE_DIR}/serial
+    ${OpenVINO_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
     /opt/MVS/include/
+)
+
+# 添加编译定义
+target_compile_definitions(volleyball_detector PRIVATE
+    USE_OPENVINO
+    USE_OPENCV
 )
 
 # 添加海康SDK库路径
@@ -42,6 +50,7 @@ target_link_libraries(volleyball_detector PRIVATE
     openvino::runtime
     ${OpenCV_LIBS}
     MvCameraControl
+    ${OpenVINO_LIBRARIES}
 )
 
 # 安装规则

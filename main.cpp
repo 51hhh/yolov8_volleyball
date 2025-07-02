@@ -1,128 +1,129 @@
-#include <iostream>
-#include <string>
-#include <thread>
-#include <atomic>
+#include "detect/detect.hpp"
+#include "camera/hikvision_wrapper.hpp"
+#include "general/common_struct.hpp"
+#include <opencv2/opencv.hpp>
 #include <chrono>
 #include <fstream>
-#include "detect.hpp"
-#include "camera.hpp"
-#include "nlohmann/json.hpp"
-#include "serial.hpp"
-#include "opencv2/opencv.hpp"
-
-#define PROJECT_PATH "/home/rick/yolo_new/"
-#define DEBUG 1
-
-std::atomic<bool> state(true);      // 原子变量，用于通知线程终止
-toe::hik_camera hik_cam;            // 创建海康相机的对象
-toe::serial serial;                 // 创建串口的对象
-toe::ov_detect ov_detector;         // 创建目标检测器的对象
-nlohmann::json config;              // 配置文件
-
-// 监控命令行ctrl+c,用于手动退出
-void sigint_handler(int sig)
-{
-    if (sig == SIGINT)
-    {
-        state.store(false);
-    }
-}
-// 串口线程（预留接口）
-void serial_process() {
-    while (state.load()) {
-        // 预留串口处理逻辑
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-}
-
-// 检测处理线程
-void detect_process() {
-    cv::Mat frame;
-    int color = 0;
-    ov_detector.detect_init(config, color);
-
-    while (state.load()) {
-        // 获取图像并执行检测
-        mutex_array[0].lock();
-        frame = frame_array[0];
-        mutex_array[0].unlock();
-
-        if (!frame.empty() && frame.rows > 0 && frame.cols > 0) {
-            try {
-                ov_detector.input_img = frame.clone();  // 确保使用深拷贝
-                ov_detector.detect();
-            } catch (const std::exception& e) {
-                std::cerr << "Detection error: " << e.what() << std::endl;
-            } catch (...) {
-                std::cerr << "Unknown detection error" << std::endl;
-            }
-        }
-    }
-}
-
-// 图像采集线程
-void grab_img() {
-    if(!hik_cam.hik_init(config, 0)) {
-        std::cerr << "Failed to initialize camera" << std::endl;
-        return;
-    }
-
-    while (state.load()) {
-        // 图像采集逻辑
-        mutex_array[0].lock();
-        cv::Mat frame = frame_array[0];
-        mutex_array[0].unlock();
-        
-        if (!frame.empty()) {
-            ov_detector.push_img(frame);
-        }
-    }
-    hik_cam.hik_end();
-}
+#include <nlohmann/json.hpp>
 
 int main() {
-    // 初始化全局变量
-    state.store(true);
-    // 为了提升cout的效率关掉缓存区同步，此时就不能使用c风格的输入输出了，例如printf
-    // oi上常用的技巧，还有提升输出效率的就是减少std::endl和std::flush的使用
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(0);
-
-    // 加载配置
-    std::ifstream f(std::string(PROJECT_PATH) + "config.json");
-    config = nlohmann::json::parse(f);
-
-    // 启动线程
-    std::thread grab_thread(grab_img);
-    std::thread detect_thread(detect_process);
-    std::thread serial_thread(serial_process);
-
-    // 主线程处理显示
-    cv::Mat display_frame;
-    while (state.load()) {
-        mutex_array[0].lock();
-        if(!frame_array[0].empty()) {
-            display_frame = frame_array[0].clone();
-        }
-        mutex_array[0].unlock();
-        
-        if(!display_frame.empty()) {
-            cv::imshow("Detection", display_frame);
-            if (cv::waitKey(1) == 27) break;
-        }
-        
-        // 检查线程状态
-        if (!grab_thread.joinable() || !detect_thread.joinable()) {
-            state.store(false);
-            break;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    // 读取配置文件
+    std::ifstream config_file("config.json");
+    nlohmann::json config;
+    config_file >> config;
+    std::string camera_type = config.value("camera_type", "usb");
+    std::string model_type = config["model_type"];
+    std::string xml_path, bin_path;
+    if (model_type == "int8") {
+        xml_path = config["path"]["int8_xml_file_path"];
+        bin_path = config["path"]["int8_bin_file_path"];
+    } else {
+        xml_path = config["path"]["xml_file_path"];
+        bin_path = config["path"]["bin_file_path"];
     }
 
-    // 等待线程结束
-    grab_thread.join();
-    detect_thread.join();
-    serial_thread.join();
+    // 初始化检测器
+    YOLOv8Detector detector(xml_path, bin_path);
 
+
+    //  frame矩阵
+    cv::Mat frame;
+    //  VideoCapture对象
+    cv::VideoCapture cap;
+    //  海康摄像头对象
+    HikVisionWrapper* hik = nullptr;
+    //  上一帧的时间
+    auto prev_time = std::chrono::high_resolution_clock::now();
+
+
+
+    if (camera_type == "hikvision") {
+        // 调用海康摄像头
+        int cam_id = 0;
+        int width = 1920;
+        int height = 1080;
+        int offset_x = 0;
+        int offset_y = 0;
+        int exposure = 2000;
+        if (config.contains("camera") && config["camera"].contains("0")) {
+            auto c = config["camera"]["0"];
+            width = c.value("width", width); // 宽
+            height = c.value("height", height); // 高
+            offset_x = c.value("offset_x", offset_x); // X偏移
+            offset_y = c.value("offset_y", offset_y); // Y偏移
+            exposure = c.value("exposure", exposure); // 曝光时间
+        }
+        s_camera_params params{cam_id, width, height, offset_x, offset_y, exposure};
+        hik = new HikVisionWrapper(params);
+        if (!hik->initialize()) {
+            fprintf(stderr, "Failed to initialize Hikvision camera %d\n", cam_id);
+            return -1;
+        }
+    } else {
+        // 调用USB摄像头
+        cap.open(0);
+        if (!cap.isOpened()) {
+            std::cerr << "Error: Could not open camera" << std::endl;
+            return -1;
+        }
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
+    }
+
+    // 主循环
+    while (true) {
+        if (camera_type == "hikvision"){
+            //使用海康获取帧
+            if (!hik->getFrame(frame)) {
+                fprintf(stderr, "Hikvision camera get frame failed.\n");
+                break;
+            }
+        }
+        else{
+            //使用USB摄像头获取帧
+            if (!cap.read(frame)) {
+                std::cerr << "Error: Could not read frame" << std::endl;
+                break;
+            }
+        }
+
+        // 计算FPS
+        auto curr_time = std::chrono::high_resolution_clock::now();
+        float fps = 1e6 / std::chrono::duration_cast<std::chrono::microseconds>(curr_time - prev_time).count();
+        prev_time = curr_time;
+
+        // 执行检测
+        auto detections = detector.detect(frame);
+
+        // 绘制结果
+        for (const auto& det : detections) {
+            cv::rectangle(frame, det.box, cv::Scalar(0, 0, 255), 2);
+            std::string label = "volleyball: " + std::to_string(det.confidence).substr(0, 4);
+            cv::putText(frame, label, cv::Point(det.box.x, det.box.y - 10),
+                       cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255), 2);
+        }
+
+        // 显示FPS
+        cv::putText(frame, "FPS: " + std::to_string(fps).substr(0, 4), 
+                   cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 255, 0), 2);
+
+        // 显示结果
+        cv::imshow("YOLOv8 OpenVINO Inference", frame);
+
+        // 退出条件
+        if (cv::waitKey(1) == 'q') {
+            break;
+        }
+    }
+
+    if (camera_type == "hikvision") {
+        if (hik) {
+            hik->release();
+            delete hik;
+        }
+    } else {
+        cap.release();
+    }
+    cv::destroyAllWindows();
     return 0;
 }

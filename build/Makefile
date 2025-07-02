@@ -174,29 +174,29 @@ volleyball_detector/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/volleyball_detector.dir/build.make CMakeFiles/volleyball_detector.dir/build
 .PHONY : volleyball_detector/fast
 
-camera/camera.o: camera/camera.cpp.o
-.PHONY : camera/camera.o
+camera/hikvision_wrapper.o: camera/hikvision_wrapper.cpp.o
+.PHONY : camera/hikvision_wrapper.o
 
 # target to build an object file
-camera/camera.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/volleyball_detector.dir/build.make CMakeFiles/volleyball_detector.dir/camera/camera.cpp.o
-.PHONY : camera/camera.cpp.o
+camera/hikvision_wrapper.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/volleyball_detector.dir/build.make CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.o
+.PHONY : camera/hikvision_wrapper.cpp.o
 
-camera/camera.i: camera/camera.cpp.i
-.PHONY : camera/camera.i
+camera/hikvision_wrapper.i: camera/hikvision_wrapper.cpp.i
+.PHONY : camera/hikvision_wrapper.i
 
 # target to preprocess a source file
-camera/camera.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/volleyball_detector.dir/build.make CMakeFiles/volleyball_detector.dir/camera/camera.cpp.i
-.PHONY : camera/camera.cpp.i
+camera/hikvision_wrapper.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/volleyball_detector.dir/build.make CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.i
+.PHONY : camera/hikvision_wrapper.cpp.i
 
-camera/camera.s: camera/camera.cpp.s
-.PHONY : camera/camera.s
+camera/hikvision_wrapper.s: camera/hikvision_wrapper.cpp.s
+.PHONY : camera/hikvision_wrapper.s
 
 # target to generate assembly for a file
-camera/camera.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/volleyball_detector.dir/build.make CMakeFiles/volleyball_detector.dir/camera/camera.cpp.s
-.PHONY : camera/camera.cpp.s
+camera/hikvision_wrapper.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/volleyball_detector.dir/build.make CMakeFiles/volleyball_detector.dir/camera/hikvision_wrapper.cpp.s
+.PHONY : camera/hikvision_wrapper.cpp.s
 
 detect/detect.o: detect/detect.cpp.o
 .PHONY : detect/detect.o
@@ -283,9 +283,9 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... volleyball_detector"
-	@echo "... camera/camera.o"
-	@echo "... camera/camera.i"
-	@echo "... camera/camera.s"
+	@echo "... camera/hikvision_wrapper.o"
+	@echo "... camera/hikvision_wrapper.i"
+	@echo "... camera/hikvision_wrapper.s"
 	@echo "... detect/detect.o"
 	@echo "... detect/detect.i"
 	@echo "... detect/detect.s"
