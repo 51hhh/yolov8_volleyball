@@ -43,7 +43,7 @@ int main() {
         if (config.contains("camera") && config["camera"].contains("0")) {
             auto c = config["camera"]["0"];
         }
-        s_camera_params params{cam_id, width, height, offset_x, offset_y, exposure};
+        s_camera_params params{cam_id, 640, 480, 0, 0, 10000};
         hik = new HikVisionWrapper(params);
         if (!hik->initialize()) {
             fprintf(stderr, "Failed to initialize Hikvision camera %d\n", cam_id);
