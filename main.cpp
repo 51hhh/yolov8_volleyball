@@ -40,18 +40,8 @@ int main() {
     if (camera_type == "hikvision") {
         // 调用海康摄像头
         int cam_id = 0;
-        int width = 1920;
-        int height = 1080;
-        int offset_x = 0;
-        int offset_y = 0;
-        int exposure = 2000;
         if (config.contains("camera") && config["camera"].contains("0")) {
             auto c = config["camera"]["0"];
-            width = c.value("width", width); // 宽
-            height = c.value("height", height); // 高
-            offset_x = c.value("offset_x", offset_x); // X偏移
-            offset_y = c.value("offset_y", offset_y); // Y偏移
-            exposure = c.value("exposure", exposure); // 曝光时间
         }
         s_camera_params params{cam_id, width, height, offset_x, offset_y, exposure};
         hik = new HikVisionWrapper(params);
