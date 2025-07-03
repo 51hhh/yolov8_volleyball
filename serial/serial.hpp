@@ -24,6 +24,8 @@ namespace toe
         void get_msg(int & color, int & mode);
         //发送封装好的坐标信息
         void send_msg(const std::vector<double> & msg);
+        //发送ASCII字符串
+        void send_msg(const char* data, size_t len);
     private:
         // boost串口相关  
         boost::asio::io_service io_s;

@@ -78,18 +78,7 @@ struct volleyball_data
     cv::Point2f pts;
 };
 
-
-struct pick_merge_store{
-    int id;
-    std::vector<cv::Point2f> merge_pts;
-    std::vector<float> merge_confs;
-};
-
-typedef struct
-{
-    cv::Rect box;
-    float conf;
-
-}Detection;
+// 删除与 common_struct.hpp 冲突的 pick_merge_store 前向声明
+struct Detection;
 
 #endif

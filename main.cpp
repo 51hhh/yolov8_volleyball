@@ -1,6 +1,7 @@
 #include "detect/detect.hpp"
 #include "camera/hikvision_wrapper.hpp"
 #include "general/common_struct.hpp"
+#include "serial/serial.hpp"
 #include <opencv2/opencv.hpp>
 #include <chrono>
 #include <fstream>
@@ -60,6 +61,10 @@ int main() {
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
     }
 
+    // 串口对象初始化
+    toe::serial serial;
+    serial.init_port(config);
+
     // 主循环
     while (true) {
         if (camera_type == "hikvision"){
@@ -84,6 +89,29 @@ int main() {
 
         // 执行检测
         auto detections = detector.detect(frame);
+
+        // 串口输出评分最高的目标中心坐标
+        if (!detections.empty()) {
+            auto max_it = std::max_element(detections.begin(), detections.end(),
+                [](const auto& a, const auto& b) { return a.confidence < b.confidence; });
+            const auto& det = *max_it;
+            int img_cx = frame.cols / 2;
+            int img_cy = frame.rows / 2;
+            int box_cx = det.box.x + det.box.width / 2;
+            int box_cy = det.box.y + det.box.height / 2;
+            int out_x = box_cx - img_cx; // 右为正，左为负
+            int out_y = img_cy - box_cy; // 上为正，下为负
+
+
+            // std::vector<double> msg = {static_cast<double>(out_x), static_cast<double>(out_y), 0.0};
+            // serial.send_msg(msg);
+
+
+            char buf[64];
+            snprintf(buf, sizeof(buf), "%d,%d\n", out_x, out_y);
+            serial.send_msg(buf, strlen(buf)); // 新增：以16进制ASCII方式发送字符串
+
+        }
 
         // 绘制结果
         for (const auto& det : detections) {

@@ -21,30 +21,36 @@ void serial::init_port()
             continue;
         }
         //设置串口参数  
+        // 串口参数设置
+        // 波特率 115200
         serial_fd.set_option(boost::asio::serial_port::baud_rate(115200), m_ec);
         if (m_ec)
         {
             std::cout << "串口参数设置失败，错误信息:" << m_ec.message() << std::endl;
             continue;
         }
+        // 流控制 none
         serial_fd.set_option(boost::asio::serial_port::flow_control(boost::asio::serial_port::flow_control::none), m_ec);  
         if (m_ec)
         {
             std::cout << "串口参数设置失败，错误信息:" << m_ec.message() << std::endl;
             continue;
         }
+        //奇偶校验 none
         serial_fd.set_option(boost::asio::serial_port::parity(boost::asio::serial_port::parity::none), m_ec);  
         if (m_ec)
         {
             std::cout << "串口参数设置失败，错误信息:" << m_ec.message() << std::endl;
             continue;
         }
+        // 停止位 one
         serial_fd.set_option(boost::asio::serial_port::stop_bits(boost::asio::serial_port::stop_bits::one), m_ec);  
         if (m_ec)
         {
             std::cout << "串口参数设置失败，错误信息:" << m_ec.message() << std::endl;
             continue;
         }
+        // 字符大小 8
         serial_fd.set_option(boost::asio::serial_port::character_size(8), m_ec);
         if (m_ec)
         {
@@ -82,6 +88,7 @@ void serial::get_msg(int & color, int & mode)
     }
 }
 
+// 将 std::vector<double> 中的数据打包成 char[] 并发送到串口
 void serial::send_msg(const std::vector<double> & msg)
 {
     if (msg.size() >= 3)
@@ -108,4 +115,12 @@ void serial::send_msg(const std::vector<double> & msg)
         serial_fd.write_some(boost::asio::buffer(sbuff) ,m_ec);  
         output_mutex_.unlock();
     }
+}
+
+// 发送ASCII字符串
+void serial::send_msg(const char* data, size_t len)
+{
+    output_mutex_.lock();
+    boost::asio::write(serial_fd, boost::asio::buffer(data, len), m_ec);
+    output_mutex_.unlock();
 }
