@@ -8,5 +8,5 @@
     },
     "model_type": "fp32",
     "camera_type": "hikvision",
-    "DEBUG":true
+    "DEBUG":false
 }

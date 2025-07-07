@@ -112,25 +112,31 @@ int main() {
             serial.send_msg(buf, strlen(buf)); // 新增：以16进制ASCII方式发送字符串
 
         }
-
-        // 绘制结果
-        for (const auto& det : detections) {
-            cv::rectangle(frame, det.box, cv::Scalar(0, 0, 255), 2);
-            std::string label = "volleyball: " + std::to_string(det.confidence).substr(0, 4);
-            cv::putText(frame, label, cv::Point(det.box.x, det.box.y - 10),
-                       cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255), 2);
+        else {
+            // 如果没有检测到目标，发送空消息
+            serial.send_msg("0,0\n", 4); // 新增：发送空消息
         }
 
-        // 显示FPS
-        cv::putText(frame, "FPS: " + std::to_string(fps).substr(0, 4), 
-                   cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 255, 0), 2);
+        // 显示结果（仅在DEBUG模式）
+        if (config["DEBUG"]) {
 
-        // 显示结果
-        cv::imshow("YOLOv8 OpenVINO Inference", frame);
+            // 绘制结果
+            for (const auto& det : detections) {
+                cv::rectangle(frame, det.box, cv::Scalar(0, 0, 255), 2);
+                std::string label = "volleyball: " + std::to_string(det.confidence).substr(0, 4);
+                cv::putText(frame, label, cv::Point(det.box.x, det.box.y - 10),
+                        cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255), 2);
+            }
 
-        // 退出条件
-        if (cv::waitKey(1) == 'q') {
-            break;
+            // 显示FPS
+            cv::putText(frame, "FPS: " + std::to_string(fps).substr(0, 4), 
+                    cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 255, 0), 2);
+                    
+            cv::imshow("YOLOv8 OpenVINO Inference", frame);
+            // 退出条件
+            if (cv::waitKey(1) == 'q') {
+                break;
+            }
         }
     }
 
@@ -142,6 +148,8 @@ int main() {
     } else {
         cap.release();
     }
-    cv::destroyAllWindows();
+    if (config["DEBUG"]) {
+        cv::destroyAllWindows();
+    }
     return 0;
 }
