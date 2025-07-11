@@ -4,9 +4,12 @@
         "xml_file_path": "data/best_openvino_model/best.xml",
         "int8_bin_file_path": "data/best_int8_openvino_model/best.bin",
         "int8_xml_file_path": "data/best_int8_openvino_model/best.xml",
+        "nanodet_bin_path": "data/best_openvino_nanodet/nanodet_ir.bin",
+        "nanodet_xml_path": "data/best_openvino_nanodet/nanodet_ir.xml",
         "serial_path": "/dev/ttyUSB0"
     },
     "model_type": "fp32",
+    "detector_type": "yolov8",
     "camera_type": "hikvision",
-    "DEBUG":false
+    "DEBUG": false
 }

@@ -14,8 +14,16 @@ int main() {
     config_file >> config;
     std::string camera_type = config.value("camera_type", "usb");
     std::string model_type = config["model_type"];
+    std::string detector_type = config.value("detector_type", "yolov8");
     std::string xml_path, bin_path;
-    if (model_type == "int8") {
+    
+    // 初始化检测器
+    ObjectDetector::ModelType model_type_enum = ObjectDetector::YOLOv8;
+    if (detector_type == "nanodet") {
+        xml_path = config["path"]["nanodet_xml_path"];
+        bin_path = config["path"]["nanodet_bin_path"];
+        model_type_enum = ObjectDetector::NanoDet;
+    } else if (model_type == "int8") {
         xml_path = config["path"]["int8_xml_file_path"];
         bin_path = config["path"]["int8_bin_file_path"];
     } else {
@@ -23,8 +31,7 @@ int main() {
         bin_path = config["path"]["bin_file_path"];
     }
 
-    // 初始化检测器
-    YOLOv8Detector detector(xml_path, bin_path);
+    ObjectDetector detector(xml_path, bin_path, "CPU", model_type_enum);
 
 
     //  frame矩阵
@@ -111,6 +118,9 @@ int main() {
             snprintf(buf, sizeof(buf), "%d,%d\n", out_x, out_y);
             serial.send_msg(buf, strlen(buf)); // 新增：以16进制ASCII方式发送字符串
 
+            // 输出检测结果到终端
+            std::cout << "Detected volleyball at (" << box_cx << ", " << box_cy << ") with confidence: " 
+                      << det.confidence << std::endl;
         }
         else {
             // 如果没有检测到目标，发送空消息
