@@ -136,7 +136,7 @@ cmake ..
 make -j$(nproc)
 ```
 
-> 注：编译产物名称为 `volleyball_detector`。`start.sh` 中引用的是旧版名称 `volleyball`，如需使用启动脚本请更新其中的可执行文件名。
+> 注：编译产物位于 `build/volleyball_detector`。`start.sh` 已更新为正确路径。
 
 ### 4. 配置
 
@@ -212,12 +212,12 @@ out_y = image_center_y - box_center_y   // 上为正
 | 问题 | 解决方案 |
 |------|---------|
 | 编译报错找不到 OpenVINO | `source /opt/intel/openvino/setupvars.sh` |
-| 编译报错找不到 Boost | 检查 CMakeLists.txt 中 `BOOST_ROOT` 路径。如遇链接错误，确认 `target_link_libraries` 中包含 `Boost::system` |
+| 编译报错找不到 Boost | 检查 CMakeLists.txt 中 `BOOST_ROOT` 路径是否匹配系统 Boost 安装位置 |
 | 串口打不开 / 程序卡住 | 检查 `/dev/ttyUSB0` 是否存在，`sudo chmod 666 /dev/ttyUSB0` |
 | 没有串口设备 | 设置 `DEBUG=true` 单独测试检测效果，或注释 `main.cpp` 中串口相关代码 |
 | 没有海康相机 | 将 `config.json` 中 `camera_type` 改为 `"usb"` |
 | 检测不到排球 | 检查模型路径是否正确，降低代码中的置信度阈值 |
-| start.sh 报错找不到 volleyball | 修改 `start.sh` 中的可执行文件名为 `volleyball_detector` |
+| start.sh 报错 | 确认已在项目根目录下运行，`start.sh` 会调用 `./build/volleyball_detector` |
 
 ## 致谢
 

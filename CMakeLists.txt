@@ -49,6 +49,7 @@ link_directories(/opt/MVS/bin)
 target_link_libraries(volleyball_detector PRIVATE
     openvino::runtime
     ${OpenCV_LIBS}
+    Boost::system
     MvCameraControl
     ${OpenVINO_LIBRARIES}
 )
